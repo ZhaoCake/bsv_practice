@@ -63,7 +63,7 @@ endcase
 
 ### 关于casex的说明
 
-在Verilog中，`casex`语句提供了类似if-else的优先级匹配功能，支持通配符（x/z），按书写顺序进行优先级匹配。`casex`在某种程度上等效于if-else的优先级逻辑，但BSV语言不支持casex语法。
+在Verilog中，`casex`语句提供了类似if-else的优先级匹配功能，支持通配符（x/z），按书写顺序进行优先级匹配。`casex`在某种程度上等效于if-else的优先级逻辑，但BSV语言不支持casex语法（但存在case matches语法）。
 
 对于8-3优先编码器这种典型的优先级电路，if-else实现更符合其"优先级"的本质含义，虽然会产生不等延迟，但这正是优先编码器的预期行为。
 
