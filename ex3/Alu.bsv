@@ -14,18 +14,19 @@ interface Alu;
     method AluResult alu_op (Bit#(3) op_code, Bit#(4) a, Bit#(4) b);
     
     // 多方法接口 - 每个功能单独一个方法
-    method Bit#(4) add_op (Bit#(4) a, Bit#(4) b);
-    method Bit#(4) sub_op (Bit#(4) a, Bit#(4) b);
-    method Bit#(4) not_op (Bit#(4) a);
-    method Bit#(4) and_op (Bit#(4) a, Bit#(4) b);
-    method Bit#(4) or_op (Bit#(4) a, Bit#(4) b);
-    method Bit#(4) xor_op (Bit#(4) a, Bit#(4) b);
-    method Bit#(1) less_than (Bit#(4) a, Bit#(4) b);
-    method Bit#(1) equal (Bit#(4) a, Bit#(4) b);
-    
-    // 状态查询方法
-    method Bool check_overflow (Bit#(4) a, Bit#(4) b, Bit#(4) result, Bool is_sub);
-    method Bool check_zero (Bit#(4) result);
+    // 那么一个问题是最终编译出的返回值会是共享4bit的吗？其结果是并非，因为用这种方式，那么
+    // 结果是每个方法都可以在统一周期调用，这本就与原义不同，所以应该只用一个值动作方法
+    // method Bit#(4) add_op (Bit#(4) a, Bit#(4) b);
+    // method Bit#(4) sub_op (Bit#(4) a, Bit#(4) b);
+    // method Bit#(4) not_op (Bit#(4) a);
+    // method Bit#(4) and_op (Bit#(4) a, Bit#(4) b);
+    // method Bit#(4) or_op (Bit#(4) a, Bit#(4) b);
+    // method Bit#(4) xor_op (Bit#(4) a, Bit#(4) b);
+    // method Bit#(1) less_than (Bit#(4) a, Bit#(4) b);
+    // method Bit#(1) equal (Bit#(4) a, Bit#(4) b);
+    // // 状态查询方法
+    // method Bool check_overflow (Bit#(4) a, Bit#(4) b, Bit#(4) result, Bool is_sub);
+    // method Bool check_zero (Bit#(4) result);
 endinterface
 
 (* synthesize *)
@@ -123,59 +124,6 @@ module mkAlu (Alu);
             overflow: overflow_flag,
             carry: carry_flag
         };
-    endmethod
-    
-    // 各个独立操作方法
-    method Bit#(4) add_op (Bit#(4) a, Bit#(4) b);
-        Bit#(5) temp = extend(a) + extend(b);
-        return temp[3:0];
-    endmethod
-    
-    method Bit#(4) sub_op (Bit#(4) a, Bit#(4) b);
-        Bit#(5) temp = extend(a) - extend(b);
-        return temp[3:0];
-    endmethod
-    
-    method Bit#(4) not_op (Bit#(4) a);
-        return ~a;
-    endmethod
-    
-    method Bit#(4) and_op (Bit#(4) a, Bit#(4) b);
-        return a & b;
-    endmethod
-    
-    method Bit#(4) or_op (Bit#(4) a, Bit#(4) b);
-        return a | b;
-    endmethod
-    
-    method Bit#(4) xor_op (Bit#(4) a, Bit#(4) b);
-        return a ^ b;
-    endmethod
-    
-    method Bit#(1) less_than (Bit#(4) a, Bit#(4) b);
-        Int#(4) signed_a = unpack(a);
-        Int#(4) signed_b = unpack(b);
-        return (signed_a < signed_b) ? 1'b1 : 1'b0;
-    endmethod
-    
-    method Bit#(1) equal (Bit#(4) a, Bit#(4) b);
-        return (a == b) ? 1'b1 : 1'b0;
-    endmethod
-    
-    // 辅助方法：检查溢出
-    method Bool check_overflow (Bit#(4) a, Bit#(4) b, Bit#(4) result, Bool is_sub);
-        Bit#(1) sign_a = a[3];
-        Bit#(1) sign_b = is_sub ? ~b[3] : b[3];  // 减法时B取反
-        Bit#(1) sign_result = result[3];
-        
-        // 溢出条件：两个同号数相加结果异号，或两个异号数相减结果与被减数异号
-        Bool overflow_condition = (sign_a == sign_b) && (sign_a != sign_result);
-        return overflow_condition;
-    endmethod
-    
-    // 辅助方法：检查零标志
-    method Bool check_zero (Bit#(4) result);
-        return (result == 4'b0000);
     endmethod
     
 endmodule
