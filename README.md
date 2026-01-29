@@ -1,7 +1,42 @@
-# BSV Practice
+# Bluespec SystemVerilog Practice (HDLBits)
 
-这份练习列表是为了帮助学习和实践硬件设计语言 Bluespec SystemVerilog (BSV) 而准备的。它包括了从基础外设设计到系统集成的多个项目，旨在通过实际操作来加深对硬件设计和验证的理解。
+This repository is set up for practicing Bluespec SystemVerilog (BSV) by solving problems from HDLBits.
 
-# 主要内容
+## Quick Start
 
-果然还是做南大的数字逻辑实验DLCO比较靠谱。
+1. **Activate Environment** (if using Nix/direnv):
+   ```bash
+   direnv allow
+   ```
+
+2. **Navigate to a Problem**:
+   ```bash
+   cd hdlbits/01_Verilog_Language/01_Basics
+   ```
+
+3. **Build and Simulate** (Bluesim):
+   ```bash
+   make Zero
+   # Compiles Zero.bsv (module mkZero) and runs the simulation
+   ```
+
+4. **Generate Verilog** (for HDLBits submission):
+   ```bash
+   make Zero.v
+   # Generates Verilog in verilog/mkZero.v
+   ```
+
+## Project Structure
+
+- **hdlbits/**: Contains subdirectories for each problem chapter.
+  - Each subdirectory has a minimal `Makefile` that includes the root `makebase.mk`.
+  - Create a new `.bsv` file for each problem (e.g., `Wire.bsv`).
+- **makebase.mk**: The core build script covering compilation and simulation rules.
+- **Makefile**: Root makefile for global cleanup (`make clean`).
+
+## Adding New Problems
+
+1. Create a directory (e.g., `hdlbits/02_Vectors`).
+2. Add a `Makefile` pointing to `makebase.mk`.
+3. Create your `.bsv` file (e.g. `Vector0.bsv`) with a matching top module (`module mkVector0`).
+4. Run `make Vector0`.

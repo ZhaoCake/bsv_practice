@@ -1,1 +1,22 @@
-*.v
+# Build artifacts
+build/
+verilog/
+*_sim
+*.so
+*.bo
+*.ba
+*.sched
+*.cxx
+*.h
+*.o
+
+# Waveforms
+*.vcd
+*.fst
+
+# Logs
+*.log
+*.out
+
+# direnv
+.direnv/
